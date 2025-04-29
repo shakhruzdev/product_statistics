@@ -1,0 +1,10 @@
+# HTML Pages
+base html
+client page
+product page
+order page
+
+# Views
+add client
+delete client
+update client
