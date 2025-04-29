@@ -8,7 +8,7 @@ from django.db.models import (
 )
 
 
-class User(Model):
+class Client(Model):
     full_name = CharField(max_length=255)
     phone_number = CharField(max_length=12)
 
@@ -27,7 +27,7 @@ class Product(Model):
 
 
 class Order(Model):
-    client = ForeignKey('apps.User', on_delete=CASCADE)
+    client = ForeignKey('apps.Client', on_delete=CASCADE)
     product = ForeignKey('apps.Product', on_delete=CASCADE)
     quantity = IntegerField()
 

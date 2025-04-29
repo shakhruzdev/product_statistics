@@ -1,13 +1,13 @@
 from django.contrib import admin
 from .models import (
-    User,
+    Client,
     Product,
     Order
 )
 
 
-@admin.register(User)
-class UserAdmin(admin.ModelAdmin):
+@admin.register(Client)
+class ClientAdmin(admin.ModelAdmin):
     list_display = ('id', 'full_name', 'phone_number')
     list_display_links = ('id', 'full_name', 'phone_number')
 
