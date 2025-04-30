@@ -1,12 +1,5 @@
 asgiref==3.8.1
-cffi==1.17.1
-cryptography==43.0.1
 Django==5.2
-django-ckeditor-5==0.2.13
-mysql-connector-python==9.0.0
-pillow==10.4.0
-psycopg==3.2.6
-pycparser==2.22
-python-dotenv==1.0.1
+psycopg2-binary==2.9.10
 sqlparse==0.5.3
-typing_extensions==4.12.2
+typing_extensions==4.13.2
