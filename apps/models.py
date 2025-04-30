@@ -4,8 +4,16 @@ from django.db.models import (
     CharField,
     ForeignKey,
     CASCADE,
-    IntegerField
+    IntegerField, DateTimeField
 )
+
+
+class TimeBaseModel(Model):
+    updated_at = DateTimeField(auto_now=True)
+    created_at = DateTimeField(auto_now_add=True)
+
+    class Meta:
+        abstract = True
 
 
 class Client(Model):
@@ -16,7 +24,7 @@ class Client(Model):
         return self.full_name
 
 
-class Product(Model):
+class Product(Model, TimeBaseModel):
     name = CharField(max_length=255)
     bought_price = BigIntegerField()
     sold_price = BigIntegerField()
@@ -26,7 +34,7 @@ class Product(Model):
         return self.name
 
 
-class Order(Model):
+class Order(Model, TimeBaseModel):
     client = ForeignKey('apps.Client', on_delete=CASCADE)
     product = ForeignKey('apps.Product', on_delete=CASCADE)
     quantity = IntegerField()
