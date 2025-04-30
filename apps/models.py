@@ -24,7 +24,7 @@ class Client(Model):
         return self.full_name
 
 
-class Product(Model, TimeBaseModel):
+class Product(TimeBaseModel):
     name = CharField(max_length=255)
     bought_price = BigIntegerField()
     sold_price = BigIntegerField()
