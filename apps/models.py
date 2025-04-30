@@ -34,7 +34,7 @@ class Product(Model, TimeBaseModel):
         return self.name
 
 
-class Order(Model, TimeBaseModel):
+class Order(TimeBaseModel):
     client = ForeignKey('apps.Client', on_delete=CASCADE)
     product = ForeignKey('apps.Product', on_delete=CASCADE)
     quantity = IntegerField()
