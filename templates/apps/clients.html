@@ -4,9 +4,20 @@
 {% block content %}
     <main class="main">
         <div class="form-row">
-            <input type="text" placeholder="Имя клиента" class="input">
-            <input type="text" placeholder="Телефон" class="input">
-            <button class="add-btn">+ Добавить клиента</button>
+            <button class="add-btn" onclick="openModal()">+ Добавить клиента</button>
+        </div>
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <h2>Добавить клиента</h2>
+                <form id="clientForm" method="post" action="{% url 'client_list' %}">
+                    {% csrf_token %}
+                    Имя: <input type="text" name="full_name" required><br>
+                    Телефон: <input type="tel" name="phone_number" required><br><br>
+                    <button type="submit" class="save-btn">Сохранить</button>
+                    <button type="button" class="cancel-btn">Отменить</button>
+                </form>
+            </div>
         </div>
 
         <table class="client-table">
@@ -28,9 +39,25 @@
                     <button class="icon-btn delete" title="Удалить">🗑</button>
                 </td>
             </tr>
-            <!-- Другие строки -->
             </tbody>
         </table>
     </main>
+    <script>
+        function openModal() {
+            document.getElementById("modal").style.display = "block";
+        }
+
+        function closeModal() {
+            document.getElementById("modal").style.display = "none";
+        }
+
+        document.getElementById("clientForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+            const name = e.target.name.value;
+            const phone = e.target.phone.value;
+            console.log("Yangi klient:", name, phone);
+            closeModal();
+        });
+    </script>
 
 {% endblock %}
