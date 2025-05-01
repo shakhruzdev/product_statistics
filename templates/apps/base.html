@@ -1,0 +1,32 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{% static 'apps/css/clients.css' %}">
+    <link rel="stylesheet" href="{% static 'apps/css/products.css' %}">
+    <link rel="stylesheet" href="{% static 'apps/css/orders.css' %}">
+</head>
+<body>
+
+<div class="container">
+    <aside class="sidebar">
+        <a style="text-decoration: none" href="{% url 'client_list' %}">
+            <div class="sidebar-header active">Клиенты</div>
+        </a>
+        <a style="text-decoration: none" href="{% url 'product_list' %}">
+            <div class="sidebar-item">Товары</div>
+        </a>
+        <a style="text-decoration: none" href="{% url 'order_list' %}">
+            <div class="sidebar-item">Заказы</div>
+        </a>
+    </aside>
+    {% block content %}
+    {% endblock %}
+</div>
+
+
+</body>
+</html>

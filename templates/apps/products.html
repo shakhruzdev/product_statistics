@@ -1,0 +1,43 @@
+{% extends 'apps/base.html' %}
+{% load static %}
+
+{% block content %}
+    <main class="main">
+        <table class="product-table">
+            <thead>
+            <tr>
+                <th>№</th>
+                <th>Название</th>
+                <th>Купленная цена</th>
+                <th>Продаваемая цена</th>
+                <th>Штук</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>1</td>
+                <td>Пример 1</td>
+                <td>500₽</td>
+                <td>700₽</td>
+                <td>10</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Пример 2</td>
+                <td>200₽</td>
+                <td>350₽</td>
+                <td>5</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Пример 3</td>
+                <td>800₽</td>
+                <td>1000₽</td>
+                <td>2</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <button class="add-btn">➕</button>
+    </main>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends 'apps/base.html' %}
+{% load static %}
+
+{% block content %}
+    <main class="main">
+        <div class="search-container">
+            <input type="text" placeholder="Поиск..." class="search-input">
+            <button class="search-button">🔍</button>
+        </div>
+
+        <div class="order-form">
+            <input type="text" placeholder="Имя клиента" class="order-input full">
+
+            <div class="order-row">
+                <input type="text" placeholder="Название продукта" class="order-input wide">
+                <input type="number" placeholder="Количество" class="order-input small">
+                <input type="number" placeholder="Цена" class="order-input small">
+            </div>
+            <div class="order-row">
+                <input type="text" placeholder="Название продукта" class="order-input wide">
+                <input type="number" placeholder="Количество" class="order-input small">
+                <input type="number" placeholder="Цена" class="order-input small">
+            </div>
+            <div class="order-row">
+                <input type="text" placeholder="Название продукта" class="order-input wide">
+                <input type="number" placeholder="Количество" class="order-input small">
+                <input type="number" placeholder="Цена" class="order-input small">
+            </div>
+
+            <div class="total-section">
+                <input type="text" class="total-input" value="Итого: 159" readonly>
+                <button class="pay-btn">Оплатить</button>
+            </div>
+        </div>
+    </main>
+{% endblock %}
