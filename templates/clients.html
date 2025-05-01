@@ -1,10 +1,173 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Клиенты</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background-color: #f9f9f9;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 220px;
+            background-color: #ffffff;
+            border-right: 1px solid #ddd;
+            display: flex;
+            flex-direction: column;
+            padding-top: 20px;
+        }
+
+        .sidebar-header,
+        .sidebar-item {
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .sidebar-header.active {
+            background-color: #007BFF;
+            color: #fff;
+            font-weight: bold;
+            border-radius: 0 10px 10px 0;
+        }
+
+        .sidebar-item:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* Main content */
+        .main {
+            flex: 1;
+            padding: 30px;
+            background-color: #f0f2f5;
+        }
+
+        /* Form */
+        .form-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .input {
+            padding: 10px 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            width: 220px;
+            font-size: 14px;
+        }
+
+        .add-btn {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .add-btn:hover {
+            background-color: #218838;
+        }
+
+        /* Table */
+        .client-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .client-table th, .client-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .client-table th {
+            background-color: #f5f5f5;
+            font-weight: 600;
+            color: #555;
+        }
+
+        /* Icon buttons */
+        .icon-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            margin-right: 8px;
+            transition: transform 0.2s;
+        }
+
+        .icon-btn:hover {
+            transform: scale(1.2);
+        }
+
+        .icon-btn.edit {
+            color: #007BFF;
+        }
+
+        .icon-btn.delete {
+            color: #dc3545;
+        }
+
+    </style>
 </head>
 <body>
+<div class="container">
+    <aside class="sidebar">
+        <div class="sidebar-header active">Клиенты</div>
+        <div class="sidebar-item">Товары</div>
+        <div class="sidebar-item">Заказы</div>
+    </aside>
 
+    <main class="main">
+        <div class="form-row">
+            <input type="text" placeholder="Имя клиента" class="input">
+            <input type="text" placeholder="Телефон" class="input">
+            <button class="add-btn">+ Добавить клиента</button>
+        </div>
+
+        <table class="client-table">
+            <thead>
+            <tr>
+                <th>№</th>
+                <th>Имя</th>
+                <th>Телефон</th>
+                <th>Действия</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>1</td>
+                <td>Ali Valiev</td>
+                <td>+7 707 777 7007</td>
+                <td>
+                    <button class="icon-btn edit" title="Изменить">✏️</button>
+                    <button class="icon-btn delete" title="Удалить">🗑</button>
+                </td>
+            </tr>
+            <!-- Другие строки -->
+            </tbody>
+        </table>
+    </main>
+</div>
 </body>
 </html>

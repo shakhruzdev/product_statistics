@@ -14,8 +14,10 @@ class ClientCreateListView(CreateView, ListView):
 class ProductCreateUpdateListView(CreateView, ListView):
     model = Product
     template_name = 'products.html'
+    fields = '__all__'
 
 
 class OrderCreateListView(CreateView, ListView):
     model = Order
     template_name = 'orders.html'
+    fields = '__all__'
