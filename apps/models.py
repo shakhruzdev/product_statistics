@@ -18,7 +18,7 @@ class TimeBaseModel(Model):
 
 class Client(Model):
     full_name = CharField(max_length=255)
-    phone_number = CharField(max_length=12)
+    phone_number = CharField(max_length=12, unique=True)
 
     def __str__(self):
         return self.full_name

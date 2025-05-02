@@ -30,15 +30,18 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>1</td>
-                <td>Ali Valiev</td>
-                <td>+7 707 777 7007</td>
-                <td>
-                    <button class="icon-btn edit" title="Изменить">✏️</button>
-                    <button class="icon-btn delete" title="Удалить">🗑</button>
-                </td>
-            </tr>
+            {% for client in clients %}
+                <tr>
+                    <td>{{ client.id }}</td>
+                    <td>{{ client.full_name }}</td>
+                    <td>{{ client.phone_number }}</td>
+                    <td>
+                        <button class="icon-btn edit" title="Изменить">✏️</button>
+                        <button class="icon-btn delete" title="Удалить">🗑</button>
+                    </td>
+                </tr>
+            {% endfor %}
+
             </tbody>
         </table>
     </main>
