@@ -1,0 +1,29 @@
+import re
+from django import forms
+from .models import Client
+
+KZ_PREFIXES = {'701', '702', '707', '708', '747', '775', '776', '777', '778'}
+
+class ClientForm(forms.ModelForm):
+    class Meta:
+        model = Client
+        fields = ['full_name', 'phone_number']
+
+    def clean_phone_number(self):
+        phone = self.cleaned_data.get('phone_number')
+
+        if not phone.startswith('+7') or len(phone) != 12:
+            raise forms.ValidationError("Номер телефона должен быть в формате +7XXXXXXXXXX")
+
+        digits_only = phone[2:]
+        if not digits_only.isdigit():
+            raise forms.ValidationError("Номер телефона должен содержать только цифры после +7")
+
+        prefix = digits_only[:3]
+        if prefix not in KZ_PREFIXES:
+            raise forms.ValidationError("Номер должен начинаться с допустимого кода Казахстана (например, 707, 778)")
+
+        if Client.objects.filter(phone_number=phone).exists():
+            raise forms.ValidationError("Клиент с таким номером телефона уже существует.")
+
+        return phone

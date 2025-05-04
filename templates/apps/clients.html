@@ -12,10 +12,22 @@
                 <h2>Добавить клиента</h2>
                 <form id="clientForm" method="post" action="{% url 'client_list' %}">
                     {% csrf_token %}
-                    Имя: <input type="text" name="full_name" required><br>
-                    Телефон: <input type="tel" name="phone_number" required><br><br>
+                    {% if form.non_field_errors %}
+                        <div class="error-message">
+                            {{ form.non_field_errors.0 }}
+                        </div>
+                    {% endif %}
+                    <label>Имя:</label>
+                    {{ form.full_name.errors }}
+                    {{ form.full_name }}
+                    <label for="id_phone_number">Телефон:</label>
+                    {{ form.phone_number.errors }}
+                    <input type="tel" id="phone_number" name="phone_number" maxlength="12" required
+                           placeholder="+7XXXXXXXXXX" value="{{ form.phone_number.value|default:'+7' }}">
+                    <span id="phone-error" style="color:red;"></span>
+
                     <button type="submit" class="save-btn">Сохранить</button>
-                    <button type="button" class="cancel-btn">Отменить</button>
+                    <button type="button" class="cancel-btn" onclick="closeModal()">Отменить</button>
                 </form>
             </div>
         </div>
@@ -45,6 +57,12 @@
             </tbody>
         </table>
     </main>
+    <style>
+        .error-message {
+            color: red;
+            margin-bottom: 10px;
+        }
+    </style>
     <script>
         function openModal() {
             document.getElementById("modal").style.display = "block";
@@ -55,11 +73,43 @@
         }
 
         document.getElementById("clientForm").addEventListener("submit", function (e) {
-            e.preventDefault();
             const name = e.target.name.value;
             const phone = e.target.phone.value;
-            console.log("Yangi klient:", name, phone);
+            console.log("Новый клиент:", name, phone);
             closeModal();
+        });
+    </script>
+    {% if form.errors %}
+        <script>
+            window.addEventListener("DOMContentLoaded", function () {
+                openModal();
+            });
+        </script>
+    {% endif %}
+    <script>
+        const phoneInput = document.getElementById("phone_number");
+        const errorSpan = document.getElementById("phone-error");
+
+        phoneInput.addEventListener("focus", () => {
+            if (!phoneInput.value.startsWith("+7")) {
+                phoneInput.value = "+7";
+            }
+        });
+
+        phoneInput.addEventListener("input", () => {
+            if (!phoneInput.value.startsWith("+7")) {
+                phoneInput.value = "+7" + phoneInput.value.replace(/[^0-9]/g, "").slice(0, 10);
+            } else {
+                phoneInput.value = "+7" + phoneInput.value.slice(2).replace(/[^0-9]/g, "").slice(0, 10);
+            }
+
+            const prefix = phoneInput.value.slice(2, 5);
+            const allowedPrefixes = ["701", "702", "707", "708", "747", "775", "776", "777", "778"];
+            if (phoneInput.value.length === 12 && !allowedPrefixes.includes(prefix)) {
+                errorSpan.textContent = "Номер должен начинаться с допустимого кода Казахстана (например, 707, 778)";
+            } else {
+                errorSpan.textContent = "";
+            }
         });
     </script>
 
