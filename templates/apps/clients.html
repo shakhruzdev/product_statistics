@@ -49,7 +49,12 @@
                     <td>{{ client.phone_number }}</td>
                     <td>
                         <button class="icon-btn edit" title="Изменить">✏️</button>
-                        <button class="icon-btn delete" title="Удалить">🗑</button>
+                        <button class="icon-btn delete" title="Удалить"
+                                onclick="openDeleteModal(this)"
+                                data-client-id="{{ client.id }}"
+                                data-client-name="{{ client.full_name }}">
+                            🗑
+                        </button>
                     </td>
                 </tr>
             {% endfor %}
@@ -57,10 +62,64 @@
             </tbody>
         </table>
     </main>
+    <div id="deleteModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeDeleteModal()">&times;</span>
+            <h2>Удаление клиента</h2>
+            <p id="deleteText">Вы уверены, что хотите удалить клиента?</p>
+            <form id="deleteForm" method="POST">
+                {% csrf_token %}
+                <button type="submit" class="delete-btn">Да, удалить</button>
+                <button type="button" class="cancel-btn" onclick="closeDeleteModal()">Отмена</button>
+            </form>
+        </div>
+    </div>
     <style>
+        .delete-btn {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .delete-btn:hover {
+            background-color: #218838;
+        }
+
+        .delete-btn:active {
+            background-color: #1e7e34;
+            transform: scale(0.98);
+        }
+
         .error-message {
             color: red;
             margin-bottom: 10px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 400px;
+            text-align: center;
         }
     </style>
     <script>
@@ -111,6 +170,20 @@
                 errorSpan.textContent = "";
             }
         });
+    </script>
+    <script>
+        function openDeleteModal(button) {
+            const clientId = button.getAttribute('data-client-id');
+            const clientName = button.getAttribute('data-client-name');
+            document.getElementById('deleteText').textContent = `Are you sure you want to delete ${clientName}?`;
+            const form = document.getElementById('deleteForm');
+            form.action = `/clients/delete/${clientId}/`;
+            document.getElementById('deleteModal').style.display = 'flex';
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').style.display = 'none';
+        }
     </script>
 
 {% endblock %}

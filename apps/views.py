@@ -1,6 +1,13 @@
-from django.views.generic import ListView, CreateView
+import json
+from django.http import JsonResponse
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from apps.models import Client, Product, Order
+from django.utils.decorators import method_decorator
+from django.views import View
+from django.views.decorators.csrf import csrf_exempt
+from django.views.generic import ListView, CreateView, DeleteView
+from apps.models import Product, Order
+from .models import Client
 
 
 class ClientCreateListView(CreateView, ListView):
@@ -22,6 +29,14 @@ class ClientCreateListView(CreateView, ListView):
         context = super().get_context_data(**kwargs)
         context['clients'] = self.object_list
         return context
+
+
+class ClientDeleteView(DeleteView):
+    model = Client
+    success_url = reverse_lazy('client_list')
+
+    def get(self, request, *args, **kwargs):
+        return redirect('client_list')
 
 
 class ProductCreateUpdateListView(CreateView, ListView):
