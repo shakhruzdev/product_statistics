@@ -1,21 +1,18 @@
-import json
-from django.http import JsonResponse
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.utils.decorators import method_decorator
-from django.views import View
-from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import ListView, CreateView, DeleteView
+
 from apps.models import Product, Order
+from .forms import ClientForm
 from .models import Client
 
 
 class ClientCreateListView(CreateView, ListView):
     model = Client
     template_name = 'apps/clients.html'
-    fields = '__all__'
     context_object_name = 'clients'
     success_url = reverse_lazy('client_list')
+    form_class = ClientForm
 
     def get(self, request, *args, **kwargs):
         self.object_list = self.get_queryset()

@@ -1,8 +1,9 @@
-import re
 from django import forms
+
 from .models import Client
 
 KZ_PREFIXES = {'701', '702', '707', '708', '747', '775', '776', '777', '778'}
+
 
 class ClientForm(forms.ModelForm):
     class Meta:
