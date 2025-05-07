@@ -46,7 +46,9 @@ class ClientUpdateView(UpdateView):
 class ProductCreateListView(CreateView, ListView):
     model = Product
     template_name = 'apps/products.html'
-    fields = '__all__'
+    fields = 'name', 'bought_price', 'sold_price', 'quantity'
+    context_object_name = 'products'
+    success_url = reverse_lazy('product_list')
 
 
 class OrderCreateListView(CreateView, ListView):

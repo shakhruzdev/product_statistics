@@ -7,19 +7,35 @@
     <title>Title</title>
     {% block css_link %}
     {% endblock %}
+    <link rel="stylesheet" href="{% static 'apps/css/theme.css' %}">
 </head>
 <body>
 
 <div class="container">
     <aside class="sidebar">
         <a style="text-decoration: none" href="{% url 'client_list' %}">
-            <div class="sidebar-header active">Клиенты</div>
+            <div class="{% if request.resolver_match.url_name == 'client_list' %}
+            	sidebar-header active
+            	{% else %}
+            	sidebar-item
+            {% endif %}">Клиенты
+            </div>
         </a>
         <a style="text-decoration: none" href="{% url 'product_list' %}">
-            <div class="sidebar-item">Товары</div>
+            <div class="{% if request.resolver_match.url_name == 'product_list' %}
+            	sidebar-header active
+            	{% else %}
+            	sidebar-item
+            {% endif %}">Товары
+            </div>
         </a>
         <a style="text-decoration: none" href="{% url 'order_list' %}">
-            <div class="sidebar-item">Заказы</div>
+            <div class="{% if request.resolver_match.url_name == 'order_list' %}
+            	sidebar-header active
+            	{% else %}
+            	sidebar-item
+            {% endif %}">Заказы
+            </div>
         </a>
     </aside>
     {% block content %}
