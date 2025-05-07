@@ -43,7 +43,7 @@ class ClientUpdateView(UpdateView):
     success_url = reverse_lazy('client_list')
 
 
-class ProductCreateUpdateListView(CreateView, ListView):
+class ProductCreateListView(CreateView, ListView):
     model = Product
     template_name = 'apps/products.html'
     fields = '__all__'
