@@ -1,6 +1,9 @@
 {% extends 'apps/base.html' %}
 {% load static %}
 
+{% block css_link %}
+    <link rel="stylesheet" href="{% static 'apps/css/products.css' %}">
+{% endblock %}
 {% block content %}
     <main class="main">
         <table class="product-table">

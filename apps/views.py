@@ -1,6 +1,6 @@
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, DeleteView
+from django.views.generic import ListView, CreateView, DeleteView, UpdateView
 
 from apps.models import Product, Order
 from .forms import ClientForm
@@ -34,6 +34,13 @@ class ClientDeleteView(DeleteView):
 
     def get(self, request, *args, **kwargs):
         return redirect('client_list')
+
+
+class ClientUpdateView(UpdateView):
+    model = Client
+    template_name = 'apps/clients.html'
+    fields = 'phone_number', 'full_name'
+    success_url = reverse_lazy('client_list')
 
 
 class ProductCreateUpdateListView(CreateView, ListView):

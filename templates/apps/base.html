@@ -5,9 +5,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="{% static 'apps/css/clients.css' %}">
-    <link rel="stylesheet" href="{% static 'apps/css/products.css' %}">
-    <link rel="stylesheet" href="{% static 'apps/css/orders.css' %}">
+    {% block css_link %}
+    {% endblock %}
 </head>
 <body>
 
@@ -26,6 +25,8 @@
     {% block content %}
     {% endblock %}
 </div>
+{% block extra_js %}
+{% endblock %}
 
 
 </body>

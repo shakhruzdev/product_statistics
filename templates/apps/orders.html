@@ -1,6 +1,9 @@
 {% extends 'apps/base.html' %}
 {% load static %}
 
+{% block css_link %}
+    <link rel="stylesheet" href="{% static 'apps/css/orders.css' %}">
+{% endblock %}
 {% block content %}
     <main class="main">
         <div class="search-container">
@@ -8,7 +11,7 @@
             <button class="search-button">🔍</button>
         </div>
 
-        <div class="order-form">
+        <div class="order-form" >
             <input type="text" placeholder="Имя клиента" class="order-input full">
 
             <div class="order-row">
