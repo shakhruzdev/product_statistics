@@ -8,3 +8,6 @@ order page
 add client
 delete client
 update client
+
+
+filterda <option value="{% if request.GET %}&{% else %}?{% endif %}prod={{ product.slug }}">{{ product.name }}</option> togirlash

@@ -1,8 +1,9 @@
 from django.contrib import admin
+
 from .models import (
     Client,
     Product,
-    Order
+    Order, OrderItem
 )
 
 
@@ -20,5 +21,11 @@ class ProductAdmin(admin.ModelAdmin):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('id', 'client', 'product', 'quantity')
-    list_display_links = ('id', 'client', 'product', 'quantity')
+    list_display = ('client',)
+    list_display_links = ('client',)
+
+
+@admin.register(OrderItem)
+class OrderItemAdmin(admin.ModelAdmin):
+    list_display = ('id', 'product', 'quantity')
+    list_display_links = ('id', 'product', 'quantity')

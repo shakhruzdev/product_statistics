@@ -1,6 +1,7 @@
 from django import forms
+from django.db.models import F
 
-from .models import Client
+from .models import Client, Order, OrderItem, Product
 
 KZ_PREFIXES = {'701', '702', '707', '708', '747', '775', '776', '777', '778'}
 
@@ -28,3 +29,22 @@ class ClientForm(forms.ModelForm):
             raise forms.ValidationError("Клиент с таким номером телефона уже существует.")
 
         return phone
+
+
+class OrderCreateForm(forms.ModelForm):
+    class Meta:
+        model = Order
+        fields = ['client']
+
+    def clean(self):
+        data = self.data
+        order = Order.objects.create(client_id=data.get('client_id'))
+        products = Product.objects.all()
+        for i in data:
+            if i.startswith('product_id'):
+                prod_id = int(data[i])
+                quantity = int(data["quantity_" + i[11:]])
+                OrderItem.objects.create(order=order, product_id=prod_id, quantity=quantity)
+                products.filter(pk=prod_id).update(quantity=F('quantity') - quantity)
+
+        return data

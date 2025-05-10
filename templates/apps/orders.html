@@ -6,34 +6,194 @@
 {% endblock %}
 {% block content %}
     <main class="main">
-        <div class="search-container">
-            <input type="text" placeholder="Поиск..." class="search-input">
-            <button class="search-button">🔍</button>
+        <div class="order-form">
+            <form action="{% url 'order_list' %}" method="POST">
+                {% csrf_token %}
+                <select name="client_id" id="client_id" required>
+                    <option value="" selected disabled>Выберите клиент</option>
+                    {% for client in clients %}
+                        <option value="{{ client.id }}">{{ client.full_name }}</option>
+                    {% endfor %}
+                </select>
+
+                <div id="orders-container">
+                    <div class="order-row">
+                        <select class="product-select" name="product_id_1" onchange="updatePrice(this)">
+                            <option value="" selected disabled>Выберите продукт</option>
+                            {% for product in products %}
+                                <option value="{{ product.id }}"
+                                        data-price="{{ product.sold_price }}"
+                                        data-quantity="{{ product.quantity }}">
+                                    {{ product.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <input type="number" class="order-quantity" min="1" value="1" name="quantity_1"
+                               placeholder="Количество" required
+                               oninput="calculateTotal()"/>
+                        <input type="number" class="order-price" placeholder="Цена" readonly/>
+                        <button type="button" onclick="removeRow(this)">⛔</button>
+                    </div>
+                </div>
+
+                <button type="button" onclick="addProduct()">+</button>
+
+                <div class="total-section">
+                    <input type="text" class="total-input" id="total" value="Итого: 0" readonly>
+                    <button type="submit" class="pay-btn">Оплатить</button>
+                </div>
+            </form>
+
+
         </div>
+        <br><br>
+        Клиент:
+        <select name="client" id="id_client" onchange="window.location.href=this.value">
+            <option value="" selected disabled>Выберите клиент</option>
+            <option style="background-color: #4dc053" value="{% url 'order_list' %}">Все</option>
+            {% for client in clients %}
+                <option value="?client={{ client.slug }}">{{ client.full_name }}</option>
+            {% endfor %}
+        </select>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        Товар:
+        <select name="client" id="id_client" onchange="window.location.href=this.value">
+            <option value="" selected disabled>Выберите клиент</option>
+            <option style="background-color: #4dc053" value="{% url 'order_list' %}">Все</option>
+            {% for product in products %}
+                <option value="?prod={{ product.slug }}">{{ product.name }}</option>
+            {% endfor %}
+        </select>
 
-        <div class="order-form" >
-            <input type="text" placeholder="Имя клиента" class="order-input full">
+        <table class="order-table">
+            <thead>
+            <tr>
+                <th>№</th>
+                <th>Клиент</th>
+                <th>Товар</th>
+                <th>Количества</th>
+                <th>Итог</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for order in orders %}
+                <tr>
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.client }}</td>
+                    <td>
+                        {% for order_item in order.order_items.all %}
+                            <b style="color: #FF9800; margin-right: 80px">{{ order_item.product.name }}</b>
+                            {{ order_item.product_price }}
+                            &nbsp;&nbsp;✖&nbsp;&nbsp;
+                            {{ order_item.quantity }}
+                            &nbsp;🟰&nbsp;
+                            {{ order_item.total_price }}
+                            <br><br>
+                        {% endfor %}
+                    </td>
+                    <td>{{ order.order_items.all|length }}</td>
+                    <td>{{ order.total_price }}</td>
+                </tr>
+            {% endfor %}
 
-            <div class="order-row">
-                <input type="text" placeholder="Название продукта" class="order-input wide">
-                <input type="number" placeholder="Количество" class="order-input small">
-                <input type="number" placeholder="Цена" class="order-input small">
-            </div>
-            <div class="order-row">
-                <input type="text" placeholder="Название продукта" class="order-input wide">
-                <input type="number" placeholder="Количество" class="order-input small">
-                <input type="number" placeholder="Цена" class="order-input small">
-            </div>
-            <div class="order-row">
-                <input type="text" placeholder="Название продукта" class="order-input wide">
-                <input type="number" placeholder="Количество" class="order-input small">
-                <input type="number" placeholder="Цена" class="order-input small">
-            </div>
-
-            <div class="total-section">
-                <input type="text" class="total-input" value="Итого: 159" readonly>
-                <button class="pay-btn">Оплатить</button>
-            </div>
-        </div>
+            </tbody>
+        </table>
     </main>
+    <style>
+        .order-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .order-table th, .order-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .order-table th {
+            background-color: #f5f5f5;
+            font-weight: 600;
+            color: #555;
+        }
+    </style>
+    <script>
+        function updatePrice(select) {
+            const price = select.options[select.selectedIndex].dataset.price;
+            const row = select.closest('.order-row');
+            const selectedOption = select.options[select.selectedIndex];
+            const maxQuantity = selectedOption.getAttribute('data-quantity');
+
+            const quantityInput = select.closest('.order-row').querySelector('.order-quantity');
+            if (quantityInput) {
+                quantityInput.max = maxQuantity;
+            }
+            row.querySelector('.order-price').value = price;
+            calculateTotal();
+            disableSelectedOptions();
+        }
+
+        function calculateTotal() {
+            let total = 0;
+            document.querySelectorAll('.order-row').forEach(row => {
+                const qty = parseFloat(row.querySelector('.order-quantity').value) || 0;
+                const price = parseFloat(row.querySelector('.order-price').value) || 0;
+                total += qty * price;
+            });
+            document.getElementById('total').value = "Итого: " + total;
+        }
+
+
+        let productIndex = 1;
+
+        function addProduct() {
+            const container = document.getElementById('orders-container');
+            const firstRow = container.querySelector('.order-row');
+            const newRow = firstRow.cloneNode(true);
+
+            productIndex += 1;
+
+            // yangi nomlar berish
+            const select = newRow.querySelector('.product-select');
+            select.name = 'product_id_' + productIndex;
+            select.value = "";
+
+            const quantity = newRow.querySelector('.order-quantity');
+            quantity.name = 'quantity_' + productIndex;
+            quantity.value = "";
+
+            container.appendChild(newRow);
+            disableSelectedOptions();  // agar sizda mavjud bo‘lsa
+        }
+
+        function disableSelectedOptions() {
+            const allSelectedValues = Array.from(document.querySelectorAll('.product-select'))
+                .map(select => select.value)
+                .filter(val => val !== "");
+
+            document.querySelectorAll('.product-select').forEach(select => {
+                Array.from(select.options).forEach(option => {
+                    if (option.value && allSelectedValues.includes(option.value) && option.value !== select.value) {
+                        option.disabled = true;
+                    } else {
+                        option.disabled = false;
+                    }
+                });
+            });
+        }
+
+        function removeRow(button) {
+            const container = document.getElementById('orders-container');
+            if (container.children.length > 1) {
+                button.closest('.order-row').remove();
+                calculateTotal();
+                disableSelectedOptions();
+            }
+        }
+    </script>
+
 {% endblock %}
