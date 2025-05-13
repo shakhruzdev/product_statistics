@@ -23,7 +23,8 @@
                             {% for product in products %}
                                 <option value="{{ product.id }}"
                                         data-price="{{ product.sold_price }}"
-                                        data-quantity="{{ product.quantity }}">
+                                        data-quantity="{{ product.quantity }}"
+                                        {% if product.quantity < 1 %}disabled{% endif %}>
                                     {{ product.name }}
                                 </option>
                             {% endfor %}
