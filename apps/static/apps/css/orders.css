@@ -86,3 +86,25 @@
 .pay-btn:hover {
     background-color: #17b388;
 }
+
+
+.order-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.order-table th, .order-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.order-table th {
+    background-color: #f5f5f5;
+    font-weight: 600;
+    color: #555;
+}
