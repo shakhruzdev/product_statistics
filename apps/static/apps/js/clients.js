@@ -43,7 +43,7 @@ function openDeleteModal(button) {
     const clientName = button.getAttribute('data-client-name');
     document.getElementById('deleteText').textContent = `Are you sure you want to delete ${clientName}?`;
     const form = document.getElementById('deleteForm');
-    form.action = `/clients/delete/${clientId}/`;
+    form.action = `/client/delete/${clientId}/`;
     document.getElementById('deleteModal').style.display = 'flex';
 }
 

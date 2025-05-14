@@ -28,6 +28,13 @@ class ClientCreateListView(CreateView, ListView):
         return context
 
 
+class ClientUpdateView(UpdateView):
+    model = Client
+    template_name = 'apps/clients.html'
+    fields = 'phone_number', 'full_name'
+    success_url = reverse_lazy('client_list')
+
+
 class ClientDeleteView(DeleteView):
     model = Client
     success_url = reverse_lazy('client_list')
@@ -36,19 +43,27 @@ class ClientDeleteView(DeleteView):
         return redirect('client_list')
 
 
-class ClientUpdateView(UpdateView):
-    model = Client
-    template_name = 'apps/clients.html'
-    fields = 'phone_number', 'full_name'
-    success_url = reverse_lazy('client_list')
-
-
 class ProductCreateListView(CreateView, ListView):
     model = Product
     template_name = 'apps/products.html'
     fields = 'name', 'bought_price', 'sold_price', 'quantity'
     context_object_name = 'products'
     success_url = reverse_lazy('product_list')
+
+
+class ProductUpdateView(UpdateView):
+    model = Product
+    template_name = 'apps/product-update.html'
+    fields = 'name', 'bought_price', 'sold_price', 'quantity'
+    success_url = reverse_lazy('product_list')
+
+
+class ProductDeleteView(DeleteView):
+    model = Product
+    success_url = reverse_lazy('product_list')
+
+    def get(self, request, *args, **kwargs):
+        return redirect('product_list')
 
 
 class OrderCreateListView(CreateView, ListView):

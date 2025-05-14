@@ -14,6 +14,7 @@
                 <th>Купленная цена</th>
                 <th>Продаваемая цена</th>
                 <th>Штук</th>
+                <th>Действия</th>
             </tr>
             </thead>
             <tbody>
@@ -24,6 +25,18 @@
                     <td>{{ product.bought_price }} ₸</td>
                     <td>{{ product.sold_price }} ₸</td>
                     <td>{{ product.quantity }}</td>
+                    <td>
+                        <button class="icon-btn update" title="Изменить">
+                            <a href="{% url 'product_update' product.id %}"
+                               style="color: white; text-decoration: none;">✏️</a>
+                        </button>
+                        <button class="icon-btn delete" title="Удалить"
+                                onclick="openDeleteModal(this)"
+                                data-product-id="{{ product.id }}"
+                                data-product-name="{{ product.full_name }}">
+                            🗑
+                        </button>
+                    </td>
                 </tr>
             {% endfor %}
 
@@ -55,6 +68,20 @@
             </form>
         </div>
     </div>
+
+    <div id="deleteModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeDeleteModal()">&times;</span>
+            <h2>Удаление товара</h2>
+            <p id="deleteText">Вы уверены, что хотите удалить товар?</p>
+            <form id="deleteForm" method="POST">
+                {% csrf_token %}
+                <button type="submit" class="delete-btn">Да, удалить</button>
+                <button type="button" class="cancel-btn" onclick="closeDeleteModal()">Отмена</button>
+            </form>
+        </div>
+    </div>
+
     {% block extra_js %}
         <script src="{% static 'apps/js/products.js' %}"></script>
     {% endblock %}
